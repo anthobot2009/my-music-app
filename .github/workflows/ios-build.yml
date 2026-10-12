@@ -1,4 +1,4 @@
-name: Flutter iOS Build
+name: Build Private Music App
 
 on:
   push:
@@ -21,13 +21,34 @@ jobs:
       with:
         channel: 'stable'
         
+    - name: Create Project Files
+      run: |
+        flutter create --org com.private.downloader --template=app .
+        rm pubspec.yaml
+        cat << 'EOF' > pubspec.yaml
+        name: youtube_music_app
+        description: A new Flutter project.
+        publish_to: 'none'
+        version: 1.0.0+1
+        environment:
+          sdk: '>=3.0.0 <4.0.0'
+        dependencies:
+          flutter:
+            sdk: flutter
+          youtube_explode_dart: ^2.3.0
+          just_audio: ^0.9.40
+          path_provider: ^2.1.2
+        flutter:
+          uses-material-design: true
+        EOF
+        
     - name: Install Dependencies
       run: flutter pub get
       
-    - name: Build IPA (Unsigned)
+    - name: Build Unsigned iOS App
       run: flutter build ipa --no-codesign
       
-    - name: Upload IPA Artifact
+    - name: Upload Finished App
       uses: actions/upload-artifact@v3
       with:
         name: ios-app
