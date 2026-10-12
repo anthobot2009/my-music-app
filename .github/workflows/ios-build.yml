@@ -21,26 +21,10 @@ jobs:
       with:
         channel: 'stable'
         
-    - name: Create Project Files
+    - name: Pre-build Setup
       run: |
-        flutter create --org com.private.downloader --template=app .
-        rm pubspec.yaml
-        cat << 'EOF' > pubspec.yaml
-        name: youtube_music_app
-        description: A new Flutter project.
-        publish_to: 'none'
-        version: 1.0.0+1
-        environment:
-          sdk: '>=3.0.0 <4.0.0'
-        dependencies:
-          flutter:
-            sdk: flutter
-          youtube_explode_dart: ^2.3.0
-          just_audio: ^0.9.40
-          path_provider: ^2.1.2
-        flutter:
-          uses-material-design: true
-        EOF
+        mkdir -p lib
+        mv main.dart lib/main.dart
         
     - name: Install Dependencies
       run: flutter pub get
